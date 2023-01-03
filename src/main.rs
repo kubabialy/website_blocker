@@ -12,12 +12,28 @@ fn swap_hosts_file(prepared_path: &Path, current_path: &Path) -> io::Result<()> 
     // Set the path to the current hosts file
     let current_hosts_path = Path::new(&current_path);
 
+    // Create a backup file
+    prepare_backup_file(&String::from(current_path.to_str().unwrap()));
+
     // Write the prepared hosts file to the current hosts file
     fs::write(current_hosts_path, prepared_hosts).expect("File couldn't be replaced");
 
     Ok(())
 }
 
+fn prepare_backup_file(current_path: &String) {
+    let mut backup_path = String::from(current_path);
+    let file_affix = "-backup";
+
+    backup_path.push_str(file_affix);
+    fs::write(backup_path, current_path).expect("Could not create a backup file");
+}
+
+/**
+Remaining stuff to add:
+- Backup [ ]
+- Add file parameter [ ]
+*/
 fn main() -> io::Result<()> {
     swap_hosts_file(Path::new("./my-hosts"), Path::new("/etc/hosts"))
 }
@@ -27,6 +43,27 @@ mod tests {
     use super::*;
     use std::fs;
     use tempfile::TempDir;
+
+    #[test]
+    fn test_backup_creation() {
+        let dir = TempDir::new().unwrap();
+
+        // Set the path to prepared file
+        let prepared_file = dir.path().join("prepared_file");
+        let prepared_file_path = prepared_file.as_path();
+
+        // Write some content to the prepared file
+        let content = "Foo bar baz";
+        fs::write(&prepared_file, content).unwrap();
+
+        // Prepare the backup file
+        prepare_backup_file(&prepared_file_path.to_str().unwrap().to_string());
+        // Read the content of the current hosts file
+        let swapped_file = fs::read_to_string(prepared_file_path).unwrap();
+
+        // Ensure that the current hosts file has the content of the prepared hosts file
+        assert_eq!(swapped_file, content.to_string());
+    }
 
     #[test]
     fn test_swap_hosts_file() {

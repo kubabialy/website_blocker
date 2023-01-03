@@ -31,6 +31,12 @@ Note that modifying the `/etc/hosts` file requires administrative privileges, so
 
 In case of need to rollback to previous config this program prepares a backup file with the same name affixed with `-backup`. So in case of `hosts` file you should expect `hosts-backup` file to be in your `etc` directory.
 
+4. In case revert of the change is needed:
+```bash
+sudo target/release/website-blocker -r
+sudo target/release/website-blocker --reverse
+```
+
 ### Example
 
 Here is an example of an `/etc/hosts` file that redirects the URLs of some popular social media sites to localhost:

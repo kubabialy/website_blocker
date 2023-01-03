@@ -37,14 +37,25 @@ struct Args {
     /// Path of the file to use as `etc/hosts` replacement
     #[arg(short, long, default_value = "./my-hosts")]
     source_file: String,
+
+    #[arg(short, long, default_value_t = false)]
+    reverse: bool
 }
 
 fn main() -> io::Result<()> {
     let args = Args::parse();
-    swap_hosts_file(
-        Path::new(args.source_file.as_str()),
-        Path::new("/etc/hosts"),
-    )
+
+    if args.reverse {
+        swap_hosts_file(
+            Path::new("/etc/hosts"),
+            Path::new("/etc/hosts-backup"),
+        )
+    } else {
+        swap_hosts_file(
+            Path::new(args.source_file.as_str()),
+            Path::new("/etc/hosts"),
+        )
+    }
 }
 
 #[cfg(test)]

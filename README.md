@@ -1,4 +1,4 @@
-# Hosts File Swapper
+# Website Blocker aka. Hosts File Swapper
 
 This Rust program allows you to swap the /etc/hosts file on your machine with a prepared hosts file. The prepared hosts file can be used to redirect the URLs of popular social media sites to localhost, or to block access to them altogether.
 

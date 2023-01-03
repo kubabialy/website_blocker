@@ -10,8 +10,8 @@ This Rust program allows you to swap the /etc/hosts file on your machine with a 
 
 1. Clone this repository:
 ```bash
-    git clone https://github.com/user/hosts-file-swapper
-    cd hosts-file-swapper
+    git clone https://github.com/kubabialy/website_blocker
+    cd website-blocker
 ```
 2. Build and run the program:
 ```bash
@@ -22,9 +22,9 @@ cargo build --release
 
 ```bash
 // This one uses default value -> ./my-hosts
-sudo target/release/hosts-file-swapper
-sudo target/release/hosts-file-swapper -s path/to/my/file
-sudo target/release/hosts-file-swapper --source-file path/to/my/file
+sudo target/release/website-blocker
+sudo target/release/website-blocker -s path/to/my/file
+sudo target/release/website-blocker --source-file path/to/my/file
 ```
 
 Note that modifying the `/etc/hosts` file requires administrative privileges, so you may need to run the program with sudo or as the root user.

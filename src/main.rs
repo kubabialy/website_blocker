@@ -1,6 +1,7 @@
 use std::fs;
 use std::io;
 use std::path::Path;
+use clap::Parser;
 
 fn swap_hosts_file(prepared_path: &Path, current_path: &Path) -> io::Result<()> {
     // Set the path to the prepared hosts file
@@ -26,16 +27,24 @@ fn prepare_backup_file(current_path: &String) {
     let file_affix = "-backup";
 
     backup_path.push_str(file_affix);
-    fs::write(backup_path, current_path).expect("Could not create a backup file");
+    let contents = fs::read_to_string(current_path).unwrap();
+    fs::write(backup_path, contents).expect("Could not create a backup file");
 }
 
-/**
-Remaining stuff to add:
-- Backup [ ]
-- Add file parameter [ ]
-*/
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+    /// Path of the file to use as `etc/hosts` replacement
+    #[arg(short, long, default_value = "./my-hosts")]
+    source_file: String,
+}
+
 fn main() -> io::Result<()> {
-    swap_hosts_file(Path::new("./my-hosts"), Path::new("/etc/hosts"))
+    let args = Args::parse();
+    swap_hosts_file(
+        Path::new(args.source_file.as_str()),
+        Path::new("/etc/hosts"),
+    )
 }
 
 #[cfg(test)]

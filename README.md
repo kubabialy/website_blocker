@@ -4,7 +4,7 @@ This Rust program allows you to swap the /etc/hosts file on your machine with a 
 
 ### Prerequisites
 
-- Rust 1.46 or higher
+- Rust 1.64 or higher
 
 ### Usage:
 
@@ -13,19 +13,23 @@ This Rust program allows you to swap the /etc/hosts file on your machine with a 
     git clone https://github.com/user/hosts-file-swapper
     cd hosts-file-swapper
 ```
-    
-2. Edit the main.rs file to specify the path to the prepared hosts file:
-
-```rust
-let prepared_hosts_path = Path::new("/path/to/prepared/hosts/file");
-```
-3. Build and run the program:
+2. Build and run the program:
 ```bash
 cargo build --release
+```
+
+3. Run it with either prepared `./my-hosts` file or provide path to one of your choice using `-s` or `--source-file` param.
+
+```bash
+// This one uses default value -> ./my-hosts
 sudo target/release/hosts-file-swapper
+sudo target/release/hosts-file-swapper -s path/to/my/file
+sudo target/release/hosts-file-swapper --source-file path/to/my/file
 ```
 
 Note that modifying the `/etc/hosts` file requires administrative privileges, so you may need to run the program with sudo or as the root user.
+
+In case of need to rollback to previous config this program prepares a backup file with the same name affixed with `-backup`. So in case of `hosts` file you should expect `hosts-backup` file to be in your `etc` directory.
 
 ### Example
 
